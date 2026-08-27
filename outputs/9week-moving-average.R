@@ -52,19 +52,18 @@ bpr_long |>
     mapping = aes(
       x = window_start,
       y = `Concentration (mg/L)`,
-      color = Sample_ID
+      linetype = Sample_ID
     )
   ) +
-  geom_point() +
   geom_line() +
   labs(
     title = "Ion Concentration",
     x = "Year",
     y = "Concentration",
-    legend = "Sample Site"
+    linetype = "Sample Site"
   ) +
-  facet_wrap(~Ion, scales = "free", ncol = 1) +
   theme(
     plot.title = element_text(hjust = 0.5)
   ) +
+  facet_wrap(~Ion, scales = "free", ncol = 1) +
   scale_linetype_manual(values = c("solid", "dashed", "dotted", "dotdash"))
