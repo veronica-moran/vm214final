@@ -28,13 +28,7 @@ Each graph shows the results of the 9 week moving average analysis of ions sampl
 Colors represent differnt sites
 
 ```{r}
-# Write the code to process and visualize the data
-#(a) potassium, (b) nitrate-N, (c) magnesium, (d) calcium and (e) ammonium-N
-# 1988 - 1995 , across four sites
-
-# Loading package and moving average functio
-
-library(tidyverse)
+# Write the code to process and visualize the dlibrary(tidyverse)
 source("R/moving-average.R")
 
 # Loading in raw data
@@ -98,4 +92,5 @@ bpr_long |>
     plot.title = element_text(hjust = 0.5)
   ) +
   scale_linetype_manual(values = c("solid", "dashed", "dotted", "dotdash"))
+
 ```

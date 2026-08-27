@@ -1,6 +1,3 @@
-# Write the code to process and visualize the data
-#(a) potassium, (b) nitrate-N, (c) magnesium, (d) calcium and (e) ammonium-N
-# 1988 - 1995 , across four sites
 # Spaghetti code
 
 library(tidyverse)
