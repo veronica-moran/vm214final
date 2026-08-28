@@ -1,96 +1,69 @@
-Background
+## Background
 
-Data
+This repository contains all the code and outputs used to recreate figure from the Schaefer et al. (2000) study.  Their research assessed stream water quality at four sites, in Bisley, Puerto Rico, in the years flanking the 1989 Hurricane Hugo. To determine stream water quality, they analyzed a 9-wk moving average of calcium, potassium, magnesium, nitrate, and ammonium. 
 
-Raw data from Schaefer et al. downloaded from the EDI data portal
+## Data
 
+Raw data from the Schaefer et al. (2000) study was obtained from the Environmental Data Initiative Data Portal.
+<https://doi.org/10.6073/PASTA/F31349BEBDC304F758718F4798D25458>
 
-Binding the four raw data frames
+## Methods
 
-
-Methods
-
-Filtering for sample date and 5 ions: Pottassium, Nitrate, Calcium, Magenesium, and Ammonium.
-
+To recreate the figure the data was processed and a function was applied to calculate the 9-week moving average of ion concentration. A line graph was used to visulaize the results from 1986 to 1994.
 
 
-Function was created to run the code that assigns 9 week windows and calculates the mean concentration for each ion.
+## Results
 
-
-
-The output of this code returns a wide tibble. This code converts the table to long tidy form.
-
-
-
-Results
-
-Each graph shows the results of the 9 week moving average analysis of ions sampled at four sites before and after Hurricane Hugo
-Colors represent differnt sites
+The figure shows the results of the 9-week moving average analysis of ion concentration sampled from 1986 to 1994 at four stream sites in Bisley, Puerto Rico.
 
 ```{r}
-# Write the code to process and visualize the dlibrary(tidyverse)
-source("R/moving-average.R")
+#| include: false
+library(tidyverse)
+```
 
-# Loading in raw data
-
-BQ1 <- read_csv("data/QuebradaCuenca1-Bisley.csv")
-BQ2 <- read_csv("data/QuebradaCuenca2-Bisley.csv")
-BQ3 <- read_csv("data/QuebradaCuenca3-Bisley.csv")
-RMP <- read_csv("data/RioMameyesPuenteRoto.csv")
-
-# Calculating moving average for each site
-
-bq1_result <- moving_average(BQ1)
-bq2_result <- moving_average(BQ2)
-bq3_result <- moving_average(BQ3)
-rmp_result <- moving_average(RMP)
-
-#Assigning variable to each sample site
-
-bq1_result$Sample_ID <- "BQ1"
-bq2_result$Sample_ID <- "BQ2"
-bq3_result$Sample_ID <- "BQ3"
-rmp_result$Sample_ID <- "RMP"
-
-
-# Binding the four data frames
-BPR <- bind_rows(bq1_result, bq2_result, bq3_result, rmp_result)
-
-#Filtering for dates 1988 - 1995, Sample_ID and 5 ions
-bpr_ions <- BPR |>
-  filter(window_start >= "1986-05-16" & window_start < "1995-01-03") |>
-  select(window_start, Sample_ID, K, `NO3-N`, Mg, Ca, `NH4-N`)
-
-# Pivoting to long tidy form for visualization
-
-bpr_long <- bpr_ions |>
-  pivot_longer(
-    cols = c(K, `NO3-N`, Mg, Ca, `NH4-N`),
-    names_to = "Ion",
-    values_to = "Concentration (mg/L)"
-  )
-
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-height: 9
+#| fig-width: 7
+#| fig-align: center
 # Visualizing analysis on stacked graphs, each site is coded by color
-bpr_long |>
-  ggplot(
-    mapping = aes(
-      x = window_start,
-      y = `Concentration (mg/L)`,
-      color = Sample_ID
-    )
-  ) +
-  geom_point() +
+bpr_ma_long <- read_csv("../output/bpr_ma_long.csv")
+
+ggplot(
+  data = bpr_ma_long,
+  mapping = aes(
+    x = window_start,
+    y = `Concentration (mg/L)`,
+    linetype = site
+  )
+) +
   geom_line() +
   labs(
-    title = "Ion Concentration",
     x = "Year",
-    y = "Concentration",
-    legend = "Sample Site"
+    y = "Ion Concentration (mg/L)",
+    linetype = "Bisley, Puerto Rico
+    Sample Site"
   ) +
-  facet_wrap(~Ion, scales = "free", ncol = 1) +
+  facet_wrap(~Ion, scales = "free", ncol = 1, strip.position = "left") +
+  scale_linetype_manual(values = c("solid", "dashed", "dotted", "dotdash")) +
+  theme_bw() +
   theme(
-    plot.title = element_text(hjust = 0.5)
-  ) +
-  scale_linetype_manual(values = c("solid", "dashed", "dotted", "dotdash"))
-
+    plot.title = element_text(hjust = 0.5),
+    panel.grid = element_blank(),
+    strip.background = element_blank(),
+    legend.title = element_blank(),
+    legend.position = "inside",
+    legend.position.inside = c(0.9, 0.3),
+    legend.background = element_blank()
+  )
 ```
+
+## Collaborators
+
+## Reference
+
+McDowell, William H., and USDA Forest Service. International Institute Of Tropical Forestry (IITF). 2024. “Chemistry of Stream Water from the Luquillo Mountains.” Environmental Data Initiative. <https://doi.org/10.6073/PASTA/F31349BEBDC304F758718F4798D25458>
+
+Schaefer, Douglas. A., William H. McDowell, Fredrick N. Scatena, and Clyde E. Asbury. 2000. “Effects of Hurricane Disturbance on Stream Water Concentrations and Fluxes in Eight Tropical Forest Watersheds of the Luquillo Experimental Forest, Puerto Rico.” Journal of Tropical Ecology 16 (2): 189–207. <https://doi.org/10.1017/s0266467400001358>
