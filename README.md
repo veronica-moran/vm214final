@@ -34,6 +34,9 @@ These codes are used to:
 - Mutating the tibble into tidy form for visualization
 - Creating the graph to visualize the 9-week moving average for the four stream sample sites.
 
+# Collaborators
+
+Project was peer reviewed by Natasha Clemencon and Sarah Busby.
 
 # References
 McDowell, William H., and USDA Forest Service. International Institute Of Tropical Forestry (IITF). 2024. “Chemistry of Stream Water from the Luquillo Mountains.” Environmental Data Initiative. https://doi.org/10.6073/PASTA/F31349BEBDC304F758718F4798D25458.
