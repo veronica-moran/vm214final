@@ -28,7 +28,7 @@ library(tidyverse)
 #| fig-height: 9
 #| fig-width: 7
 #| fig-align: center
-# Visualizing analysis on stacked graphs, each site is coded by color
+# Visualizing analysis on stacked graphs, each ion is identified by line type
 bpr_ma_long <- read_csv("../output/bpr_ma_long.csv")
 
 ggplot(

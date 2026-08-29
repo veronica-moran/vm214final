@@ -10,11 +10,7 @@ BQ2 <- read_csv("data/QuebradaCuenca2-Bisley.csv")
 BQ3 <- read_csv("data/QuebradaCuenca3-Bisley.csv")
 RMP <- read_csv("data/RioMameyesPuenteRoto.csv")
 
-
-# Binding the four data frames
-bpr_ions <- bind_rows(BQ1, BQ2, BQ3, BQ3, RMP)
-
-# Calculating moving average for ion concentrations at each site
+# Runs the moving average function for each dataframe
 
 bq1_result <- moving_average(BQ1)
 bq2_result <- moving_average(BQ2)
@@ -33,4 +29,5 @@ bpr_long <- bpr |>
     values_to = "Concentration (mg/L)"
   )
 
+# Creates a csv file and stores it in the output folder
 write_csv(bpr_long, "output/bpr_ma_long.csv")
